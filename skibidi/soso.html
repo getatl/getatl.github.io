@@ -18,23 +18,23 @@ h1 {
   font-size: 4em;
   font-weight: bold;
   text-align: center;
-  background-image: linear-gradient(to right, #4b0082, #111);
+  background-image: linear-gradient(to right, #4b0082, #111); /* Градиент от фиолетового к черному */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 0 10px #4b0082, 0 0 20px #4b0082, 0 0 30px #4b0082;
-  animation: neon 5s infinite alternate;
+  text-shadow: 0 0 10px #4b0082; /* Неоновая тень без размытия */
+  animation: neon 5s infinite linear; /* Плавная анимация переливания */
 }
 
 @keyframes neon {
   0% {
-    text-shadow: 0 0 5px #4b0082, 0 0 10px #4b0082, 0 0 15px #4b0082;
+    text-shadow: 0 0 10px #4b0082;
   }
   50% {
-    text-shadow: 0 0 10px #4b0082, 0 0 15px #4b0082, 0 0 20px #4b0082;
+    text-shadow: 0 0 20px #4b0082;
   }
   100% {
-    text-shadow: 0 0 5px #4b0082, 0 0 10px #4b0082, 0 0 15px #4b0082;
+    text-shadow: 0 0 10px #4b0082;
   }
 }
 </style>
