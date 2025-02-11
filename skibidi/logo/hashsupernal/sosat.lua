@@ -112,19 +112,17 @@ end
 
 local file = readfile("configs/Config.txt") 
 if file then
-    local ua = file:match("([^\r\n]+)") 
-    if ua then
-        local uas = "Supernal v3.0"
-        local oldr = request 
-        getgenv().request = function(options)
-            if options.Headers then
-                options.Headers["User-Agent"] = uas
-            else
-                options.Headers = {["User-Agent"] = uas}
-            end
-            local response = oldr(options)
-            return response
+    local uas = "Supernal v3.0"
+    local oldr = request 
+    getgenv().request = function(options)
+        if options.Headers then
+            options.Headers["User-Agent"] = uas
+        else
+            options.Headers = {["User-Agent"] = uas}
         end
+        local response = oldr(options)
+        return response
+   end
         
     else
         error("failed to load config")
