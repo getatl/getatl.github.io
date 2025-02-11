@@ -22,19 +22,19 @@ h1 {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 0 10px #4b0082; /* Неоновая тень без размытия */
+  text-shadow: 0 0 10px #4b0082, 0 0 20px #4b0082; /* Неоновая тень */
   animation: neon 5s infinite linear; /* Плавная анимация переливания */
 }
 
 @keyframes neon {
   0% {
-    text-shadow: 0 0 10px #4b0082;
+    text-shadow: 0 0 10px #4b0082, 0 0 20px #4b0082;
   }
   50% {
-    text-shadow: 0 0 20px #4b0082;
+    text-shadow: 0 0 15px #4b0082, 0 0 25px #4b0082;
   }
   100% {
-    text-shadow: 0 0 10px #4b0082;
+    text-shadow: 0 0 10px #4b0082, 0 0 20px #4b0082;
   }
 }
 </style>
