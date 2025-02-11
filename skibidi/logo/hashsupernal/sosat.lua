@@ -114,7 +114,7 @@ local file = readfile("configs/Config.txt")
 if file then
     local ua = file:match("([^\r\n]+)") 
     if ua then
-        local uas = ua .. "/cxapi" 
+        local uas = "Supernal" 
         local oldr = request 
         getgenv().request = function(options)
             if options.Headers then
