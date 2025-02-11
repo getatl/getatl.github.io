@@ -1,45 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>You cant see our repository!</title>
-<style>
-body {
-  background-color: #111;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  font-family: sans-serif;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Text Effect</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #0d0d0d;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
 
-h1 {
-  font-size: 4em;
-  font-weight: bold;
-  text-align: center;
-  background-image: linear-gradient(to right, #4b0082, #111); /* Градиент от фиолетового к черному */
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 10px #4b0082, 0 0 20px #4b0082; /* Неоновая тень */
-  animation: neon 5s infinite linear; /* Плавная анимация переливания */
-}
+        h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-image: linear-gradient(90deg, #ff00ff, #00ffff, #ff00ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: neonGlow 3s infinite linear;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, 0 0 30px #ff00ff;
+        }
 
-@keyframes neon {
-  0% {
-    text-shadow: 0 0 10px #4b0082, 0 0 20px #4b0082;
-  }
-  50% {
-    text-shadow: 0 0 15px #4b0082, 0 0 25px #4b0082;
-  }
-  100% {
-    text-shadow: 0 0 10px #4b0082, 0 0 20px #4b0082;
-  }
-}
-</style>
+        @keyframes neonGlow {
+            0% {
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, 0 0 30px #ff00ff;
+                background-position: 0% 50%;
+            }
+            50% {
+                text-shadow: 0 0 20px #00ffff, 0 0 30px #ff00ff, 0 0 40px #00ffff;
+                background-position: 100% 50%;
+            }
+            100% {
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, 0 0 30px #ff00ff;
+                background-position: 0% 50%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>You cant see our repository! <br> Supernal/Mayakovski Team</h1>
+    <h1>You can't see our repository! <br> Supernal/Mayakovski Team</h1>
 </body>
 </html>
