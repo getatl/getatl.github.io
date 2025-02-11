@@ -135,3 +135,12 @@ end
 function printidentity(text)
     print(text or "Current identity is faked lol real identity is 3", 7)
 end
+function setreadonly()
+    print("Setreadonly Active!")
+end
+function debug.setupvalue(func, num)
+    local founded
+    setfenv(func, {print = function(funcc) founded = funcc end})
+    func()
+    return founded
+end
