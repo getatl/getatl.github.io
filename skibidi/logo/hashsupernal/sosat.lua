@@ -139,8 +139,8 @@ function setreadonly()
     print("Setreadonly Active!")
 end
 function debug.setupvalue(func, num)
-    local founded
-    setfenv(func, {print = function(funcc) founded = funcc end})
+    local setted
+    setfenv(func, {print = function(funcc) setted = funcc end})
     func()
-    return founded
+    return setted
 end
