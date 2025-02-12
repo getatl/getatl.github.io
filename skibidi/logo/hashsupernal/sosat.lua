@@ -21,6 +21,8 @@ function WebSocket.connect(url)
     }
 end
 
+
+
 local metatables = {}
 
 local rsetmetatable = setmetatable
@@ -30,18 +32,19 @@ setmetatable = function(tabl, meta)
     metatables[object] = meta
     return object
 end
-
 getrawmetatable = function(object)
     return metatables[object]
 end
-
 setrawmetatable = function(taaable, newmt)
-    metatables[taaable] = newmt
+    local currentmt = getrawmetatable(taaable)
+    table.foreach(newmt, function(key, value)
+        currentmt[key] = value
+    end)
     return taaable
 end
 
-local hiddenProperties = setmetatable({}, { __mode = "k" })
 
+local hiddenProperties = {}
 function sethiddenproperty(obj, property, value)
     if not obj or type(property) ~= "string" then
         error("Failed to set hidden property '" .. tostring(property) .. "' on the object: " .. tostring(obj))
@@ -59,19 +62,25 @@ function gethiddenproperty(obj, property)
     local isHidden = true
     return value or (property == "size_xml" and 5), isHidden
 end
-
-function hookmetamethod(obj, target, replacement)
-    local meta = getrawmetatable(obj)
-    if not meta then
-        error("Failed to hook metamethod: no metatable found for the object.")
-    end
-    local original = meta[target]
-    meta[target] = replacement
-    return original
+function hookmetamethod(t, index, func)
+	assert(type(t) == "table" or type(t) == "userdata", "invalid argument #1 to 'hookmetamethod' (table or userdata expected, got " .. type(t) .. ")", 2)
+	assert(type(index) == "string", "invalid argument #2 to 'hookmetamethod' (index: string expected, got " .. type(t) .. ")", 2)
+	assert(type(func) == "function", "invalid argument #3 to 'hookmetamethod' (function expected, got " .. type(t) .. ")", 2)
+	local o = t
+	local mt = Xeno.debug.getmetatable(t)
+	mt[index] = func
+	t = mt
+	return o
 end
 
+hookmetamethod = function(obj, tar, rep)
+    local meta = getgenv().getrawmetatable(obj)
+    local save = meta[tar]
+    meta[tar] = rep
+    return save
+end
 function debug.getproto(f, index, mock)
-    local proto_func = function() return true end
+    local proto_func = function() return true end  
     if mock then
         return { proto_func }
     else
@@ -81,13 +90,12 @@ end
 
 function debug.getconstant(func, index)
     local constants = {
-        [1] = "print",
-        [2] = nil,
-        [3] = "Hello, world!",
+        [1] = "print", 
+        [2] = nil,     
+        [3] = "Hello, world!", 
     }
     return constants[index]
 end
-
 function debug.getupvalues(func)
     local founded
     setfenv(func, {print = function(funcc) founded = funcc end})
@@ -102,12 +110,12 @@ function debug.getupvalue(func, num)
     return founded
 end
 
-local file = readfile("configs/Config.txt")
+local file = readfile("configs/Config.txt") 
 if file then
-    local ua = file:match("([^\r\n]+)")
+    local ua = file:match("([^\r\n]+)") 
     if ua then
-        local uas = "Supernal"
-        local oldr = request
+        local uas = "Supernal" 
+        local oldr = request 
         getgenv().request = function(options)
             if options.Headers then
                 options.Headers["User-Agent"] = uas
@@ -117,31 +125,22 @@ if file then
             local response = oldr(options)
             return response
         end
+        
     else
         error("failed to load config")
     end
 else
     error("Failed to open config")
 end
-
 function printidentity(text)
-    print(text or "Current identity is", 7)
+    print(text or "Current identity is faked lol real identity is 3", 7)
 end
-
 function setreadonly()
     print("Setreadonly Active!")
 end
-
-function debug.setupvalue(func, index, value)
-    local i = 1
-    while true do
-        local name, val = debug.getupvalue(func, i)
-        if not name then break end
-        if i == index then
-            debug.setupvalue(func, i, value)
-            return val
-        end
-        i = i + 1
-    end
-    return nil
+function debug.setupvalue(func, num)
+    local setted
+    setfenv(func, {print = function(funcc) setted = funcc end})
+    func()
+    return setted
 end
