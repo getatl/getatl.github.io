@@ -133,7 +133,7 @@ else
     error("Failed to open config")
 end
 function printidentity(text)
-    print(text or "Current identity is faked lol real identity is 3", 7)
+    print(text or "Current identity is", 7)
 end
 function setreadonly()
     print("Setreadonly Active!")
