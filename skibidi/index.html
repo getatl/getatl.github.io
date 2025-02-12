@@ -11,7 +11,7 @@
       'object': true
     },
     freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports,
-    freeModule = objectTypes[typeof module] && module && !module.nodeType && module,
+    freeModule = objectTypes[typeof module] && module && !module.nodeType && module, //skibidi
     freeGlobal = freeExports && freeModule && typeof global === 'object' && global,
     moduleExports = freeModule && freeModule.exports === freeExports && freeExports;
   if (freeGlobal && (freeGlobal.global === freeGlobal ||
