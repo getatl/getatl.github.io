@@ -125,16 +125,23 @@ else
 end
 
 function printidentity(text)
-    print(text or "Current identity is faked lol real identity is 3", 7)
+    print(text or "Current identity is", 7)
 end
 
 function setreadonly()
     print("Setreadonly Active!")
 end
 
-function debug.setupvalue(func, num)
-    local setted
-    setfenv(func, {print = function(funcc) setted = funcc end})
-    func()
-    return setted
+function debug.setupvalue(func, index, value)
+    local i = 1
+    while true do
+        local name, val = debug.getupvalue(func, i)
+        if not name then break end
+        if i == index then
+            debug.setupvalue(func, i, value)
+            return val
+        end
+        i = i + 1
+    end
+    return nil
 end
