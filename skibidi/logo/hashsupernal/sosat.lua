@@ -21,7 +21,18 @@ function WebSocket.connect(url)
     }
 end
 
+local hookfunction = {}
 
+-- Реализация hookfunction
+function hookfunction.new(originalFunc, newFunc)
+    local original = originalFunc
+    originalFunc = function(...)
+        return newFunc(...)
+    end
+    return original
+end
+
+return hookfunction
 
 local metatables = {}
 
