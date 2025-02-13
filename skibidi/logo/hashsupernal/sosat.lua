@@ -30,11 +30,9 @@ setmetatable = function(tabl, meta)
     metatables[object] = meta
     return object
 end
-
 getrawmetatable = function(object)
     return metatables[object]
 end
-
 setrawmetatable = function(taaable, newmt)
     local currentmt = getrawmetatable(taaable)
     table.foreach(newmt, function(key, value)
@@ -43,15 +41,34 @@ setrawmetatable = function(taaable, newmt)
     return taaable
 end
 
-function hookmetamethod(obj, tar, rep)
-    local meta = getrawmetatable(obj)
-    if not meta then
-        meta = {}
-        setmetatable(obj, meta)
+
+local hiddenProperties = {}
+function sethiddenproperty(obj, property, value)
+    if not obj or type(property) ~= "string" then
+        error("Failed to set hidden property '" .. tostring(property) .. "' on the object: " .. tostring(obj))
     end
-    local save = meta[tar]
-    meta[tar] = rep
-    return save
+    hiddenProperties[obj] = hiddenProperties[obj] or {}
+    hiddenProperties[obj][property] = value
+    return true
+end
+
+function gethiddenproperty(obj, property)
+    if not obj or type(property) ~= "string" then
+        error("Failed to get hidden property '" .. tostring(property) .. "' from the object: " .. tostring(obj))
+    end
+    local value = hiddenProperties[obj] and hiddenProperties[obj][property] or nil
+    local isHidden = true
+    return value or (property == "size_xml" and 5), isHidden
+end
+function hookmetamethod(t, index, func)
+	assert(type(t) == "table" or type(t) == "userdata", "invalid argument #1 to 'hookmetamethod' (table or userdata expected, got " .. type(t) .. ")", 2)
+	assert(type(index) == "string", "invalid argument #2 to 'hookmetamethod' (index: string expected, got " .. type(t) .. ")", 2)
+	assert(type(func) == "function", "invalid argument #3 to 'hookmetamethod' (function expected, got " .. type(t) .. ")", 2)
+	local o = t
+	local mt = Xeno.debug.getmetatable(t)
+	mt[index] = func
+	t = mt
+	return o
 end
 
 hookmetamethod = function(obj, tar, rep)
@@ -60,7 +77,6 @@ hookmetamethod = function(obj, tar, rep)
     meta[tar] = rep
     return save
 end
-
 function debug.getproto(f, index, mock)
     local proto_func = function() return true end  
     if mock then
