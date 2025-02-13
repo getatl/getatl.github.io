@@ -60,15 +60,25 @@ function gethiddenproperty(obj, property)
     local isHidden = true
     return value or (property == "size_xml" and 5), isHidden
 end
-function hookmetamethod(t, index, func)
-	assert(type(t) == "table" or type(t) == "userdata", "invalid argument #1 to 'hookmetamethod' (table or userdata expected, got " .. type(t) .. ")", 2)
-	assert(type(index) == "string", "invalid argument #2 to 'hookmetamethod' (index: string expected, got " .. type(t) .. ")", 2)
-	assert(type(func) == "function", "invalid argument #3 to 'hookmetamethod' (function expected, got " .. type(t) .. ")", 2)
-	local o = t
-	local mt = Xeno.debug.getmetatable(t)
-	mt[index] = func
-	t = mt
-	return o
+
+function hookmetamethod(obj, target, replacement)
+    -- Получаем метатаблицу через твою DLL
+    local meta = Xeno.debug.getmetatable(obj)
+    if not meta then
+        return nil, "Failed to get metatable"
+    end
+
+    -- Проверяем, что target существует в метатаблице
+    local original = meta[target]
+    if not original then
+        return nil, "Target metamethod not found"
+    end
+
+    -- Заменяем метаметод
+    meta[target] = replacement
+
+    -- Возвращаем оригинальный метаметод для возможности восстановления
+    return original
 end
 
 hookmetamethod = function(obj, tar, rep)
