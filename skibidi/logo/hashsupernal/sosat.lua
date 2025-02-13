@@ -21,14 +21,6 @@ function WebSocket.connect(url)
     }
 end
 
-function hookfunction(originalFunc, newFunc)
-    local original = originalFunc
-    originalFunc = function(...)
-        return newFunc(...)
-    end
-    return original
-end
-
 local metatables = {}
 
 local rsetmetatable = setmetatable
